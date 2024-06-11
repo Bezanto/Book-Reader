@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Book API</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script
+        type="text/javascript"
+        src="https://www.google.com/books/jsapi.js"
+      ></script>
+    </head>
+    <body>
+      <nav class="bg-gray-800 p-4">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex justify-between items-center">
+            <div class="flex-shrink-0">
+              <a href="/" class="text-white font-bold text-xl">
+                <img
+                  src="Logo.png"
+                  alt="Logo"
+                  style="height: 100px; width: 150px"
+                />
+              </a>
+            </div>
+            <div class="hidden md:block">
+              <ul class="flex space-x-4">
+                <li>
+                  <a href="/" class="text-white hover:text-gray-300"> Home </a>
+                </li>
+                <li>
+                  <a href="/" class="text-white hover:text-gray-300"> About </a>
+                </li>
+                <li>
+                  <a href="/" class="text-white hover:text-gray-300">
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a href="/" class="text-white hover:text-gray-300">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div align="center" class="bg-gray-200">
+        <br />
+        <div class="bg-gray-300 font-sans hover:bg-gray-500 font text-xl">
+          <p>Google Books Api</p>
+        </div>
+        <div class="m-4">
+          <p>Type Your ISBN below</p>
+          <div class="m-4">
+            <input
+              class="isbn bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-white-500 focus:border-blue-500 block p-2.5 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="text"
+              name="ISBNNumber"
+              id="isbn"
+            />
+            <div class="m-4">
+              <button
+                type="button"
+                class="start text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                id="start"
+              >
+                Start Reading
+              </button>
+              <button
+                type="button"
+                class="autom text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                id="autom"
+              >
+                Auto Read
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="viewerCanvas" style="height: 500px; width: 90%"></div>
+
+      <script>
+        const button = document.querySelector(".start");
+        const isbn = document.querySelector(".isbn");
+        const auto = document.querySelector(".autom");
+
+        button.addEventListener("click", initialiase);
+
+        google.books.load({ language: "en" });
+
+        function nextStep(viewer) {
+          window.setTimeout(function () {
+            viewer.nextPage();
+            nextStep(viewer);
+          }, 3000);
+        }
+
+        function alertNotFound() {
+          alert("Book not found!");
+        }
+
+        function initialiase() {
+          var viewer = new google.books.DefaultViewer(
+            document.getElementById("viewerCanvas")
+          );
+          viewer.load("ISBN:" + isbn.value, alertNotFound);
+          auto.addEventListener("click", nextStep(viewer));
+        }
+
+        google.books.setOnLoadCallback(initialiase);
+      </script>
+    </body>
+  </html>
+</html>
